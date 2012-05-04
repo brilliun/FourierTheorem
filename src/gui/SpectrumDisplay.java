@@ -52,6 +52,7 @@ public class SpectrumDisplay implements KeyListener{
 		panel.setFocusable(true);
 		panel.addKeyListener(this);
 		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	
