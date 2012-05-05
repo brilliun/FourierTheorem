@@ -16,7 +16,7 @@ public class EnergyReservation {
 	
 	private int height;
 	
-	private double[][] spatialData; // spatialData[col][row] = spatialData[x][y]
+	private double[][] spatialData; 
 	
 	
 	public EnergyReservation(BufferedImage img){
@@ -57,7 +57,7 @@ public class EnergyReservation {
 		for(int row = 0; row < width; row++){
 			for(int col = 0; col < height; col++){
 				
-				double pixelVal = spatialData[col][row];
+				double pixelVal = spatialData[row][col];
 				
 				energySum += pixelVal * pixelVal;
 				
@@ -81,7 +81,7 @@ public class EnergyReservation {
 		Complex[][] fourierData = FourierTransformUtil.FFT2D(width, height, false, spatialData); 
 		
 		
-		Complex sum = new Complex();
+		
 		
 		
 		
@@ -90,7 +90,7 @@ public class EnergyReservation {
 				
 				
 				
-				energySum += fourierData[col][row].getEnergy();
+				energySum += fourierData[row][col].getEnergy();
 				
 //				sum = sum.add(fourierData[col][row]);
 				

@@ -79,12 +79,12 @@ public class FourierTheoremTest {
 		
 		
 		
-//		ftTest.performTests();
+		ftTest.performTests();
 		
-		SpectrumDisplay display = new SpectrumDisplay(ftTest.inputImg);
-		
-		
-		display.showDisplay();
+//		SpectrumDisplay display = new SpectrumDisplay(ftTest.inputImg);
+//		
+//		
+//		display.showDisplay();
 		
 	}
 	

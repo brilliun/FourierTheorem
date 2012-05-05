@@ -274,7 +274,7 @@ public class ImgCommonUtil {
 		return 0.21*red + 0.71*green + 0.07*blue;
 	}
 	
-	
+/*	
 	public static LinkedList<double[][]> FFT2D(BufferedImage img, boolean inverse){
 		
 		int width = img.getWidth();
@@ -429,7 +429,7 @@ public class ImgCommonUtil {
 	  
 	  return result;
 	}
-	
+*/	
 	
 	public static void writeToFile(BufferedImage img, String fileName){
 		try {

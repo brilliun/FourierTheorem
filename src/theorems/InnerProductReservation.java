@@ -17,7 +17,7 @@ public class InnerProductReservation {
 	
 	private int height;
 	
-	private double[][] imgSpatialData; // spatialData[col][row] = spatialData[x][y]
+	private double[][] imgSpatialData; 
 	
 	private double[][] filterSpatialData;
 	
@@ -65,7 +65,7 @@ public class InnerProductReservation {
 		for(int row = 0; row < width; row++){
 			for(int col = 0; col < height; col++){
 				
-				double pixelProduct = imgSpatialData[col][row] * filterSpatialData[col][row];
+				double pixelProduct = imgSpatialData[row][col] * filterSpatialData[row][col];
 				
 				innerProduct += pixelProduct;
 				
@@ -98,7 +98,7 @@ public class InnerProductReservation {
 				
 				
 				
-				Complex freqProduct = imgFourierData[col][row].mul(filterFourierData[col][row]);
+				Complex freqProduct = imgFourierData[row][col].mul(filterFourierData[row][col]);
 				
 				innerProduct = innerProduct.add(freqProduct);
 				
