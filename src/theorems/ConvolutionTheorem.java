@@ -30,9 +30,13 @@ public class ConvolutionTheorem {
 	
 	private int filterHeight;
 	
-	private static int startX = 224;
+	private static int startX_32 = 117;
 	
-	private static int startY = 224;
+	private static int startY_32 = 97;
+	
+	private static int startX_64 = 101;
+	
+	private static int startY_64 = 81;
 	
 	
 	public void setPlaneImg(BufferedImage img){

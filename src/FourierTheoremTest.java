@@ -26,12 +26,12 @@ public class FourierTheoremTest {
 	private void init(){
 		
 		
-		String imgPath = "img/patch.bmp";
+		String imgPath = "img/patch64.bmp";
 		String filterPath = "img/gabor1.bmp";
         
 		try {
 			inputImg = ImageIO.read(new File(imgPath));
-			
+			//
 			filterImg = ImageIO.read(new File(filterPath));
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
