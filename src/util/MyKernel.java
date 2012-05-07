@@ -160,8 +160,23 @@ public class MyKernel {
 		return (height - 1) / 2;
 	}
 	
-	public double[][] getKernelMatrix(){
-		return data;
+	public double[][] getRealKernelMatrix(){
+		
+		if(data != null)
+			return data;
+		
+		double[][] dataRe = new double[width][height];
+		
+		for(int i = 0; i < width; i++){
+			for(int j = 0; j < height; j++){
+				
+				dataRe[i][j] = complexData[i][j].getRe();
+				
+				
+			}
+		}
+		
+		return dataRe;
 	}
 	
 	public Complex[][] getComplexKernelMatrix(){

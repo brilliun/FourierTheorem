@@ -77,9 +77,16 @@ public class ConvolutionTheorem {
 		gaborFilter.buildKernel(size, size);
 		
 		
+		double[][] kernelDataRe = gaborFilter.getKernel().getRealKernelMatrix();
+		
+		BufferedImage kernelImg = ImgCommonUtil.writeToImageNormalize(size, size, false, kernelDataRe);
+		
+		
+		ImgCommonUtil.writeToFile(kernelImg, "kernelImg");
+		
 		setFilter(gaborFilter);
 		
-//		ImgCommonUtil.writeToFile(filterImg, "filterImg");
+//		
 		
 	}
 	
@@ -100,7 +107,7 @@ public class ConvolutionTheorem {
 		int conHeight = 64;
 		
 		
-		Complex[][] convolveResult = doSpatialConvolution(conWidth, conHeight);
+		Complex[][] convolveResult = doSpatialConvolution(startX_32, startY_32, conWidth, conHeight);
 		
 //		ImgCommonUtil.writeToFile(ImgCommonUtil.writeToImage(conWidth, conHeight, false, convolveResult), "convolve");
 		
@@ -112,7 +119,7 @@ public class ConvolutionTheorem {
 	}
 	
 	
-	public Complex[][] doSpatialConvolution(int width, int height){
+	public Complex[][] doSpatialConvolution(int startX, int startY, int width, int height){
 		
 		int endX = startX + width;
 		int endY = startY + height;
@@ -136,35 +143,35 @@ public class ConvolutionTheorem {
 	
 	public static void main(String[] args){
 		
-		String imgPath = "img/patch64.bmp";
-		BufferedImage patchImg = null;
-		
-		String targetPath = "img/5gray.bmp";
-		BufferedImage targetImg = null;
-		
-		try {
-			patchImg = ImageIO.read(new File(imgPath));
-			targetImg = ImageIO.read(new File(targetPath));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
+//		String imgPath = "img/patch64.bmp";
+//		BufferedImage patchImg = null;
+//		
+//		String targetPath = "img/5gray.bmp";
+//		BufferedImage targetImg = null;
+//		
+//		try {
+//			patchImg = ImageIO.read(new File(imgPath));
+//			targetImg = ImageIO.read(new File(targetPath));
+//		} catch (IOException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
+//		
 		
 		ConvolutionTheorem convolution = new ConvolutionTheorem();
 		
-		convolution.setPlaneImg(targetImg);
-		
-		convolution.setPatchImg(patchImg);
-		
-		convolution.generatePatchFourier();
+//		convolution.setPlaneImg(targetImg);
+//		
+//		convolution.setPatchImg(patchImg);
+//		
+//		convolution.generatePatchFourier();
 		
 		convolution.generateFilter(64);
 		
-		convolution.generateFilterFourier();
-		
-		
-		convolution.generateConvolveResultFourier();
+//		convolution.generateFilterFourier();
+//		
+//		
+//		convolution.generateConvolveResultFourier();
 	}
 	
 	
