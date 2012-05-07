@@ -259,6 +259,47 @@ public class ImgCommonUtil {
 		return resultImg;
 	}
 	
+	public static BufferedImage writeToImageNormalize(int width, int height, boolean shift, double[][] data){
+		
+		BufferedImage resultImg = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_GRAY);
+		
+		WritableRaster raster = resultImg.getRaster();
+		
+		double maxValue = Double.MIN_VALUE;
+		
+		for(int i = 0; i < width; i++){
+			for(int j = 0; j < height; j++){
+				
+				if(data[i][j] > maxValue)
+					maxValue = data[i][j];
+				
+			}
+		}
+		
+		for(int x = 0; x < width; x++){
+			for(int y = 0; y < height; y++){
+				int x2 = x;
+				int y2 = y;
+				if(shift){
+					x2 = (x + width / 2) % width;
+					y2 = (y + height / 2) % height;
+				}
+				int[] pixel = new int[1];
+				
+				
+				
+				pixel[0] = (int) Math.round(data[x2][y2] / maxValue * 255);
+				
+				
+				raster.setPixel(x, y, pixel);
+			}
+		}
+		
+		
+		resultImg.setData(raster);
+		
+		return resultImg;
+	}
 
 	public static boolean isSingleBand(BufferedImage img){
 		
