@@ -483,6 +483,35 @@ public class ImgCommonUtil {
 		
 	}
 	
+	
+	public static Complex[][] fourierProduct(int width, int height, Complex[][] target, Complex[][] kernel){
+		
+		Complex[][] product = new Complex[width][height];
+		
+		if(target.length < width || kernel.length < width)
+			return null;
+		
+		for(int i = 0; i < width; i++){
+			
+			if(target[i].length < height || kernel[i].length < height)
+				throw new IllegalArgumentException();
+			
+				
+			for(int j = 0; j < height; j++){
+				
+				product[i][j] = target[i][j].mul(kernel[i][j]);
+				
+				
+			}
+			
+			
+		}
+		
+		return product;
+		
+	}
+	
+	
 	private static int round(int v, int l, int h){
     	
     	if(v < l)

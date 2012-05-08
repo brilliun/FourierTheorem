@@ -39,7 +39,13 @@ public class ConvolutionTheorem {
 	private static int startY_64 = 81;
 	
 	
-	public void setPlaneImg(BufferedImage img){
+	
+	private Complex[][] patchFourier;
+	
+	private Complex[][] filterFourier;
+	
+	
+	public void setTargetImg(BufferedImage img){
 		this.planeImg = img;
 	}
 	
@@ -62,9 +68,13 @@ public class ConvolutionTheorem {
 	
 	public void generatePatchFourier(){
 		
-		BufferedImage patchFourier = ImgCommonUtil.getFourierImage(patchImg);
+		this.patchFourier = FourierTransformUtil.FFT2D(patchWidth, patchHeight, false, ImgCommonUtil.readGrayscaleImageData(patchImg));
 		
-		ImgCommonUtil.writeToFile(patchFourier, "patchFourier");
+		
+		
+		BufferedImage patchFourierImg = ImgCommonUtil.getFourierImage(patchImg);
+		
+		ImgCommonUtil.writeToFile(patchFourierImg, "patchFourier");
 	}
 	
 	
@@ -77,12 +87,12 @@ public class ConvolutionTheorem {
 		gaborFilter.buildKernel(size, size);
 		
 		
-		double[][] kernelDataRe = gaborFilter.getKernel().getRealKernelMatrix();
+//		double[][] kernelDataRe = gaborFilter.getKernel().getRealKernelMatrix();
+//		
+//		BufferedImage kernelImg = ImgCommonUtil.writeToImageNormalize(size, size, false, kernelDataRe);
 		
-		BufferedImage kernelImg = ImgCommonUtil.writeToImageNormalize(size, size, false, kernelDataRe);
 		
-		
-		ImgCommonUtil.writeToFile(kernelImg, "kernelImg");
+//		ImgCommonUtil.writeToFile(kernelImg, "kernelImg");
 		
 		setFilter(gaborFilter);
 		
@@ -94,20 +104,22 @@ public class ConvolutionTheorem {
 	
 	public void generateFilterFourier(){
 		
-		Complex[][] filterFourier = FourierTransformUtil.FFT2D(filterWidth, filterHeight, false, filter.getKernel().getComplexKernelMatrix());
+		this.filterFourier = FourierTransformUtil.FFT2D(filterWidth, filterHeight, false, filter.getKernel().getComplexKernelMatrix());
 		
-		BufferedImage filterFourierImg = ImgCommonUtil.writeToImageNormalize(filterWidth, filterHeight, true, filterFourier);
+		
+		
+		BufferedImage filterFourierImg = ImgCommonUtil.writeToImageNormalize(filterWidth, filterHeight, true, this.filterFourier);
 		
 		ImgCommonUtil.writeToFile(filterFourierImg, "filterFourierImg");
 	}
 	
-	public void generateConvolveResultFourier(){
+	public Complex[][] generateConvolveResultFourier(int startX, int startY){
 		
 		int conWidth = 64;
 		int conHeight = 64;
 		
 		
-		Complex[][] convolveResult = doSpatialConvolution(startX_32, startY_32, conWidth, conHeight);
+		Complex[][] convolveResult = doSpatialConvolution(startX, startY, conWidth, conHeight);
 		
 //		ImgCommonUtil.writeToFile(ImgCommonUtil.writeToImage(conWidth, conHeight, false, convolveResult), "convolve");
 		
@@ -116,10 +128,12 @@ public class ConvolutionTheorem {
 		BufferedImage convolveResultFourierImg = ImgCommonUtil.writeToImage(conWidth, conHeight, true, convolveResultFourier);
 		
 		ImgCommonUtil.writeToFile(convolveResultFourierImg, "convolveResultFourier");
+		
+		return convolveResultFourier;
 	}
 	
 	
-	public Complex[][] doSpatialConvolution(int startX, int startY, int width, int height){
+	private Complex[][] doSpatialConvolution(int startX, int startY, int width, int height){
 		
 		int endX = startX + width;
 		int endY = startY + height;
@@ -143,35 +157,45 @@ public class ConvolutionTheorem {
 	
 	public static void main(String[] args){
 		
-//		String imgPath = "img/patch64.bmp";
-//		BufferedImage patchImg = null;
-//		
-//		String targetPath = "img/5gray.bmp";
-//		BufferedImage targetImg = null;
-//		
-//		try {
-//			patchImg = ImageIO.read(new File(imgPath));
-//			targetImg = ImageIO.read(new File(targetPath));
-//		} catch (IOException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//		}
-//		
+		String imgPath = "img/patch64.bmp";
+		BufferedImage patchImg64 = null;
+		
+		String targetPath = "img/5gray256.bmp";
+		BufferedImage targetImg = null;
+		
+		try {
+			patchImg64 = ImageIO.read(new File(imgPath));
+			targetImg = ImageIO.read(new File(targetPath));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		
 		ConvolutionTheorem convolution = new ConvolutionTheorem();
 		
-//		convolution.setPlaneImg(targetImg);
-//		
-//		convolution.setPatchImg(patchImg);
-//		
-//		convolution.generatePatchFourier();
+		convolution.setTargetImg(targetImg);
 		
-		convolution.generateFilter(64);
 		
-//		convolution.generateFilterFourier();
-//		
-//		
-//		convolution.generateConvolveResultFourier();
+		convolution.setPatchImg(patchImg64);
+		
+		convolution.generatePatchFourier();
+		
+		
+		
+		int filterSize = 64;
+		
+		convolution.generateFilter(filterSize);
+		
+		convolution.generateFilterFourier();
+		
+		
+		Complex[][] fourierProduct = ImgCommonUtil.fourierProduct(filterSize, filterSize, convolution.filterFourier, convolution.patchFourier);
+		
+		
+		Complex[][] convolveResultFourier = convolution.generateConvolveResultFourier(startX_64, startY_64);
+		
+		System.out.println(fourierProduct + "," + convolveResultFourier);
 	}
 	
 	
