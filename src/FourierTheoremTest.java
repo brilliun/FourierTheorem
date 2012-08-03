@@ -26,8 +26,8 @@ public class FourierTheoremTest {
 	private void init(){
 		
 		
-		String imgPath = "img/box2.bmp";
-		String filterPath = "img/gabor1.bmp";
+		String imgPath = "img/1a.bmp";
+		String filterPath = "img/1b.bmp";
         
 		try {
 			inputImg = ImageIO.read(new File(imgPath));
@@ -81,7 +81,7 @@ public class FourierTheoremTest {
 		
 //		ftTest.performTests();
 		
-		SpectrumDisplay display = new SpectrumDisplay(ftTest.inputImg);
+		SpectrumDisplay display = new SpectrumDisplay(ftTest.inputImg, ftTest.filterImg);
 		
 		
 		display.showDisplay();

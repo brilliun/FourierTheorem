@@ -516,8 +516,10 @@ public class ImgCommonUtil {
     	
     	if(v < l)
     		return l;
-    	if(v > h)
+    	if(v > h){
     		return h;
+    	}
+    		
     	
     	return v;
     	

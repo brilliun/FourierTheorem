@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -13,25 +14,30 @@ import util.ImgCommonUtil;
 public class SpectrumDisplay implements KeyListener{
 	
 
-	private final static int FRAME_WIDTH = 600;
+	private final static int FRAME_WIDTH = 1024;
 	
-	private final static int FRAME_HEIGHT = 600;
+	private final static int FRAME_HEIGHT = 1100;
 	
 	
 	private JFrame frame;
 	
 	private DisplayPanel panel;
 	
-	private BufferedImage inputImg;
+	private BufferedImage inputImgA;
 	
-	private BufferedImage fourierImg;
+	private BufferedImage inputImgB;
+	
+	private BufferedImage fourierImgA;
+	
+	private BufferedImage fourierImgB;
 	
 //	private char key;
 	
 	
-	public SpectrumDisplay(BufferedImage inputImg){
+	public SpectrumDisplay(BufferedImage inputImgA, BufferedImage inputImgB){
 		
-		this.inputImg = inputImg;
+		this.inputImgA = inputImgA;
+		this.inputImgB = inputImgB;
 		
 	}
 	
@@ -67,22 +73,39 @@ public class SpectrumDisplay implements KeyListener{
 	class DisplayPanel extends JPanel {
 		
 		
-		private static final int TOP_LEFT_X = 20;
+		private static final int TOP_LEFT_X = 0;
 		
-		private static final int TOP_LEFT_Y = 20;
+		private static final int TOP_LEFT_Y = 0;
 		
-		private static final int BOT_LEFT_X = 20;
+		private static final int BOT_LEFT_X = 0;
 		
 		private static final int BOT_LEFT_Y = 300;
+		
+		private static final int TOP_RIGHT_X = 300;
+		
+		private static final int TOP_RIGHT_Y = 0;
+		
+		private static final int BOT_RIGHT_X = 300;
+		
+		private static final int BOT_RIGHT_Y = 300;
 		
 		
 		
 		protected void paintComponent(Graphics g) {
 			
-			g.drawImage(inputImg, TOP_LEFT_X, TOP_LEFT_Y, this);
+			if(inputImgA != null)
+				g.drawImage(inputImgA, TOP_LEFT_X, TOP_LEFT_Y, this);
 			
-			if(fourierImg != null)
-				g.drawImage(fourierImg, BOT_LEFT_X, BOT_LEFT_Y, this);
+			if(fourierImgA != null){
+				g.drawImage(fourierImgA, BOT_LEFT_X, BOT_LEFT_Y, this);
+				
+			}
+			
+			if(inputImgB != null)
+				g.drawImage(inputImgB, TOP_RIGHT_X, TOP_RIGHT_Y, this);
+			
+			if(fourierImgB != null)
+				g.drawImage(fourierImgB, BOT_RIGHT_X, BOT_RIGHT_Y, this);
 			
 		}
 		
@@ -113,9 +136,23 @@ public class SpectrumDisplay implements KeyListener{
 		
 		if(key == 'f'){
 			
-			this.fourierImg = ImgCommonUtil.getFourierImage(inputImg);
+			if(inputImgA != null)
+				this.fourierImgA = ImgCommonUtil.getFourierImage(inputImgA);
+			
+			if(inputImgB != null)
+				this.fourierImgB = ImgCommonUtil.getFourierImage(inputImgB);
 			
 //			this.fourierImg = ImgCommonUtil.normalize(this.fourierImg);
+			
+			
+		}
+		
+		else if(key == 's'){
+			if(this.fourierImgA != null)
+				ImgCommonUtil.writeToFile(fourierImgA, "fourierImgA");
+			
+			if(this.fourierImgB != null)
+				ImgCommonUtil.writeToFile(fourierImgB, "fourierImgB");
 			
 		}
 		
